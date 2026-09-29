@@ -1,0 +1,28 @@
+config-version: 1
+
+economy:
+  type: playerpoints
+  currency-name: Points
+
+prices:
+  slot-1: 100
+  slot-2: 200
+  slot-3: 300
+
+gui:
+  title: "&#FFFF00▶ &fХранилище Вайпа"
+  slot-free-name: "&#FFFF00◆ &fСлот свободен"
+  slot-free-lore:
+    - "&fПоложите сюда предмет, чтобы сохранить его."
+  buy-slot-name: "&#FB8808▶ &fКупить слот #&e{slot}"
+  buy-slot-lore:
+    - "&fЦена: &#FFFF00{price} &f{currency}"
+    - "&fНажмите, чтобы разблокировать слот."
+  button-pack-name: "&#FFFF00◆ &fЗапаковать вещи"
+  button-pack-lore:
+    - "&fСохраняет вещи на следующий вайп."
+    - "&fПосле запаковки меню блокируется!"
+  button-unpack-name: "&#FFFF00◆ &fРаспаковать вещи"
+  button-unpack-lore:
+    - "&fЗабрать сохраненные вещи в инвентарь."
+    - "&#FB8808▶ &fКупленные слоты будут аннулированы!"

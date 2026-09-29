@@ -1,0 +1,54 @@
+no-permission:
+  - "[message] &#FB8808▶ &fНедостаточно &#FB8808прав на использование &fданной команды!"
+  - "[sound] BLOCK_ANVIL_LAND"
+
+player-only:
+  - "[message] &#FB8808▶ &fДанная команда доступна &#FB8808только игрокам&f!"
+
+command-usage:
+  - "[message] "
+  - "[message] &#FFFF00▶ &fДоступные команды &#FFFF00GlowVipe&f:"
+  - "[message] "
+  - "[message]   &#FFFF00◆ &f/gv open &8— &fоткрыть вайповое хранилище"
+  - "[message]   &#FFFF00◆ &f/gv reload &8— &fперезагрузить конфигурацию"
+  - "[message] "
+
+reloaded:
+  - "[message] &#FFFF00◆ &fКонфигурация плагина успешно &#FFFF00перезагружена&f!"
+  - "[sound] ENTITY_EXPERIENCE_ORB_PICKUP"
+
+not-enough-currency:
+  - "[message] &#FB8808▶ &fУ вас &#FB8808недостаточно средств &fдля покупки слота!"
+  - "[sound] BLOCK_NOTE_BLOCK_BASS"
+
+buy-success:
+  - "[message] &#FFFF00◆ &fВы успешно купили слот &#FFFF00#{slot}&f!"
+  - "[sound] ENTITY_PLAYER_LEVELUP"
+
+buy-order-error:
+  - "[message] &#FB8808▶ &fПокупайте слоты строго &#FB8808по очереди&f!"
+  - "[sound] BLOCK_NOTE_BLOCK_BASS"
+
+already-packed:
+  - "[message] &#FB8808▶ &fВещи уже &#FB8808запакованы&f! Нажмите кнопку распаковки."
+  - "[sound] BLOCK_NOTE_BLOCK_BASS"
+
+no-slots-bought:
+  - "[message] &#FB8808▶ &fУ вас &#FB8808нет купленных слотов&f!"
+  - "[sound] BLOCK_NOTE_BLOCK_BASS"
+
+no-items-to-pack:
+  - "[message] &#FB8808▶ &fВы &#FB8808не положили ни одной вещи &fдля запаковки!"
+  - "[sound] BLOCK_NOTE_BLOCK_BASS"
+
+pack-success:
+  - "[message] &#FFFF00◆ &fВещи успешно &#FFFF00запакованы &fна следующий вайп!"
+  - "[sound] BLOCK_CHEST_CLOSE"
+
+unpack-success:
+  - "[message] &#FFFF00◆ &fВещи успешно &#FFFF00распакованы&f! Слоты аннулированы."
+  - "[sound] ENTITY_PLAYER_LEVELUP"
+
+economy-unavailable:
+  - "[message] &#FB8808▶ &fСистема экономики временно &#FB8808недоступна&f!"
+  - "[sound] BLOCK_ANVIL_LAND"

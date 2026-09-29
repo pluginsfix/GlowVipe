@@ -1,0 +1,11 @@
+name: GlowVipe
+version: '${project.version}'
+main: pluginsfix.glowvipe.GlowVipe
+api-version: '1.21'
+author: pluginsfix
+softdepend: [PlayerPoints, Vault, PlaceholderAPI]
+commands:
+  glowvipe:
+    description: Main GlowVipe command
+    aliases: [gv]
+    permission: glowvipe.use

@@ -1,6 +1,7 @@
 package pluginsfix.glowvipe.text;
 
-import net.kyori.adventure.text.Component;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -94,14 +95,14 @@ public final class Messages {
 
         if (line.startsWith("[actionbar] ")) {
             if (sender instanceof Player player) {
-                String text = line.substring(12);
-                player.sendActionBar(ColorUtil.toComponent(text));
+                String text = ColorUtil.colorize(line.substring(12));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(text));
             }
             return;
         }
 
         String text = line.startsWith("[message] ") ? line.substring(10) : line;
-        sender.sendMessage(ColorUtil.toComponent(text));
+        sender.sendMessage(ColorUtil.colorize(text));
     }
 
     private void playSound(Player player, String soundToken) {

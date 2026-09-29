@@ -75,7 +75,7 @@ public final class VaultService {
             int slot = GlowVipeMenu.STORAGE_SLOTS[i];
             ItemStack item = inventory.getItem(slot);
             if (item != null && item.getType() != Material.AIR && !menu.isGuiElement(item)) {
-                data.setItemData(i, item.serializeAsBytes());
+                data.setItemData(i, item.serialize());
                 hasItems = true;
             } else {
                 data.setItemData(i, null);
@@ -100,10 +100,10 @@ public final class VaultService {
 
         List<ItemStack> itemsToGive = new ArrayList<>();
         for (int i = 0; i < VaultData.MAX_SLOTS; i++) {
-            byte[] bytes = data.getItemData(i);
-            if (bytes != null && bytes.length > 0) {
+            Map<String, Object> map = data.getItemData(i);
+            if (map != null && !map.isEmpty()) {
                 try {
-                    ItemStack item = ItemStack.deserializeBytes(bytes);
+                    ItemStack item = ItemStack.deserialize(map);
                     if (item.getType() != Material.AIR) {
                         itemsToGive.add(item);
                     }
@@ -134,7 +134,7 @@ public final class VaultService {
             int slot = GlowVipeMenu.STORAGE_SLOTS[i];
             ItemStack item = inventory.getItem(slot);
             if (item != null && item.getType() != Material.AIR && !menu.isGuiElement(item)) {
-                data.setItemData(i, item.serializeAsBytes());
+                data.setItemData(i, item.serialize());
             } else {
                 data.setItemData(i, null);
             }

@@ -1,7 +1,5 @@
 package pluginsfix.glowvipe.gui;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -18,6 +16,7 @@ import pluginsfix.glowvipe.text.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public final class GlowVipeMenu {
 
@@ -41,10 +40,10 @@ public final class GlowVipeMenu {
 
     public void open(Player player, VaultData data) {
         GuiConfig guiConfig = config.getGuiConfig();
-        Component titleComponent = ColorUtil.toComponent(guiConfig.title());
+        String title = ColorUtil.colorize(guiConfig.title());
 
         GlowVipeHolder holder = new GlowVipeHolder(player.getUniqueId(), data);
-        Inventory inventory = Bukkit.createInventory(holder, INVENTORY_SIZE, titleComponent);
+        Inventory inventory = Bukkit.createInventory(holder, INVENTORY_SIZE, title);
         holder.setInventory(inventory);
 
         ItemStack filler = createFillerItem();
@@ -62,10 +61,14 @@ public final class GlowVipeMenu {
         for (int i = 0; i < VaultData.MAX_SLOTS; i++) {
             int slot = STORAGE_SLOTS[i];
             if (i < data.getPurchasedSlots()) {
-                byte[] itemBytes = data.getItemData(i);
-                if (itemBytes != null && itemBytes.length > 0) {
-                    ItemStack realItem = ItemStack.deserializeBytes(itemBytes);
-                    inventory.setItem(slot, realItem);
+                Map<String, Object> itemData = data.getItemData(i);
+                if (itemData != null && !itemData.isEmpty()) {
+                    try {
+                        ItemStack realItem = ItemStack.deserialize(itemData);
+                        inventory.setItem(slot, realItem);
+                    } catch (Exception e) {
+                        inventory.setItem(slot, createSlotFreeItem());
+                    }
                 } else {
                     if (data.isPacked()) {
                         inventory.setItem(slot, new ItemStack(Material.AIR));
@@ -92,7 +95,7 @@ public final class GlowVipeMenu {
         ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(Component.text(" ").decoration(TextDecoration.ITALIC, false));
+            meta.setDisplayName("§r ");
             meta.getPersistentDataContainer().set(elementKey, PersistentDataType.STRING, "filler");
             item.setItemMeta(meta);
         }
@@ -104,9 +107,8 @@ public final class GlowVipeMenu {
         ItemStack item = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(ColorUtil.toComponent(guiConfig.slotFreeName()));
-            List<Component> lore = ColorUtil.toComponentList(guiConfig.slotFreeLore());
-            meta.lore(lore);
+            meta.setDisplayName(ColorUtil.colorize("§r" + guiConfig.slotFreeName()));
+            meta.setLore(ColorUtil.colorizeList(guiConfig.slotFreeLore()));
             meta.getPersistentDataContainer().set(elementKey, PersistentDataType.STRING, "slot_free");
             item.setItemMeta(meta);
         }
@@ -121,10 +123,10 @@ public final class GlowVipeMenu {
             String nameText = guiConfig.buySlotName()
                     .replace("{slot}", String.valueOf(slotNumber))
                     .replace("%slot%", String.valueOf(slotNumber));
-            meta.displayName(ColorUtil.toComponent(nameText));
+            meta.setDisplayName(ColorUtil.colorize("§r" + nameText));
 
             List<String> rawLore = guiConfig.buySlotLore();
-            List<Component> lore = new ArrayList<>(rawLore.size());
+            List<String> lore = new ArrayList<>(rawLore.size());
             for (String line : rawLore) {
                 String processed = line.replace("{slot}", String.valueOf(slotNumber))
                         .replace("%slot%", String.valueOf(slotNumber))
@@ -132,9 +134,9 @@ public final class GlowVipeMenu {
                         .replace("%price%", String.valueOf(price))
                         .replace("{currency}", config.getCurrencyName())
                         .replace("%currency%", config.getCurrencyName());
-                lore.add(ColorUtil.toComponent(processed));
+                lore.add(ColorUtil.colorize("§r" + processed));
             }
-            meta.lore(lore);
+            meta.setLore(lore);
             meta.getPersistentDataContainer().set(elementKey, PersistentDataType.STRING, "buy_slot_" + slotNumber);
             item.setItemMeta(meta);
         }
@@ -146,8 +148,8 @@ public final class GlowVipeMenu {
         ItemStack item = new ItemStack(Material.CHEST);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(ColorUtil.toComponent(guiConfig.buttonPackName()));
-            meta.lore(ColorUtil.toComponentList(guiConfig.buttonPackLore()));
+            meta.setDisplayName(ColorUtil.colorize("§r" + guiConfig.buttonPackName()));
+            meta.setLore(ColorUtil.colorizeList(guiConfig.buttonPackLore()));
             meta.getPersistentDataContainer().set(elementKey, PersistentDataType.STRING, "button_pack");
             item.setItemMeta(meta);
         }
@@ -159,8 +161,8 @@ public final class GlowVipeMenu {
         ItemStack item = new ItemStack(Material.TRAPPED_CHEST);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(ColorUtil.toComponent(guiConfig.buttonUnpackName()));
-            meta.lore(ColorUtil.toComponentList(guiConfig.buttonUnpackLore()));
+            meta.setDisplayName(ColorUtil.colorize("§r" + guiConfig.buttonUnpackName()));
+            meta.setLore(ColorUtil.colorizeList(guiConfig.buttonUnpackLore()));
             meta.getPersistentDataContainer().set(elementKey, PersistentDataType.STRING, "button_unpack");
             item.setItemMeta(meta);
         }

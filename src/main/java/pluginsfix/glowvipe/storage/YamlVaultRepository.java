@@ -1,13 +1,14 @@
 package pluginsfix.glowvipe.storage;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import pluginsfix.glowvipe.domain.VaultData;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -51,15 +52,19 @@ public final class YamlVaultRepository implements VaultRepository {
 
         int purchasedSlots = config.getInt(key + ".purchased-slots", 0);
         boolean packed = config.getBoolean(key + ".packed", false);
-        Map<Integer, byte[]> items = new HashMap<>();
+        Map<Integer, Map<String, Object>> items = new HashMap<>();
 
         for (int i = 0; i < VaultData.MAX_SLOTS; i++) {
-            String b64 = config.getString(key + ".slots." + i);
-            if (b64 != null && !b64.isEmpty()) {
-                try {
-                    byte[] bytes = Base64.getDecoder().decode(b64);
-                    items.put(i, bytes);
-                } catch (IllegalArgumentException ignored) {
+            String slotKey = key + ".slots." + i;
+            if (config.isConfigurationSection(slotKey)) {
+                ConfigurationSection section = config.getConfigurationSection(slotKey);
+                if (section != null) {
+                    items.put(i, section.getValues(true));
+                }
+            } else if (config.isItemStack(slotKey)) {
+                ItemStack item = config.getItemStack(slotKey);
+                if (item != null) {
+                    items.put(i, item.serialize());
                 }
             }
         }
@@ -80,9 +85,9 @@ public final class YamlVaultRepository implements VaultRepository {
             config.set(key + ".purchased-slots", data.getPurchasedSlots());
             config.set(key + ".packed", data.isPacked());
             for (int i = 0; i < VaultData.MAX_SLOTS; i++) {
-                byte[] itemBytes = data.getItemData(i);
-                if (itemBytes != null && itemBytes.length > 0) {
-                    config.set(key + ".slots." + i, Base64.getEncoder().encodeToString(itemBytes));
+                Map<String, Object> itemData = data.getItemData(i);
+                if (itemData != null && !itemData.isEmpty()) {
+                    config.set(key + ".slots." + i, itemData);
                 } else {
                     config.set(key + ".slots." + i, null);
                 }
@@ -103,9 +108,9 @@ public final class YamlVaultRepository implements VaultRepository {
                 config.set(key + ".purchased-slots", data.getPurchasedSlots());
                 config.set(key + ".packed", data.isPacked());
                 for (int i = 0; i < VaultData.MAX_SLOTS; i++) {
-                    byte[] itemBytes = data.getItemData(i);
-                    if (itemBytes != null && itemBytes.length > 0) {
-                        config.set(key + ".slots." + i, Base64.getEncoder().encodeToString(itemBytes));
+                    Map<String, Object> itemData = data.getItemData(i);
+                    if (itemData != null && !itemData.isEmpty()) {
+                        config.set(key + ".slots." + i, itemData);
                     } else {
                         config.set(key + ".slots." + i, null);
                     }

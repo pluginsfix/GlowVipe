@@ -13,13 +13,13 @@ public final class VaultData {
     private final UUID playerId;
     private int purchasedSlots;
     private boolean packed;
-    private final Map<Integer, byte[]> items = new HashMap<>();
+    private final Map<Integer, Map<String, Object>> items = new HashMap<>();
 
     public VaultData(UUID playerId) {
         this(playerId, 0, false, Collections.emptyMap());
     }
 
-    public VaultData(UUID playerId, int purchasedSlots, boolean packed, Map<Integer, byte[]> items) {
+    public VaultData(UUID playerId, int purchasedSlots, boolean packed, Map<Integer, Map<String, Object>> items) {
         this.playerId = Objects.requireNonNull(playerId, "playerId");
         this.purchasedSlots = Math.max(0, Math.min(MAX_SLOTS, purchasedSlots));
         this.packed = packed;
@@ -61,12 +61,12 @@ public final class VaultData {
         return false;
     }
 
-    public byte[] getItemData(int slotIndex) {
+    public Map<String, Object> getItemData(int slotIndex) {
         return items.get(slotIndex);
     }
 
-    public void setItemData(int slotIndex, byte[] data) {
-        if (data == null || data.length == 0) {
+    public void setItemData(int slotIndex, Map<String, Object> data) {
+        if (data == null || data.isEmpty()) {
             items.remove(slotIndex);
         } else {
             items.put(slotIndex, data);
@@ -74,15 +74,15 @@ public final class VaultData {
     }
 
     public boolean hasItem(int slotIndex) {
-        byte[] data = items.get(slotIndex);
-        return data != null && data.length > 0;
+        Map<String, Object> data = items.get(slotIndex);
+        return data != null && !data.isEmpty();
     }
 
     public boolean hasAnyItems() {
         return !items.isEmpty();
     }
 
-    public Map<Integer, byte[]> getItems() {
+    public Map<Integer, Map<String, Object>> getItems() {
         return Collections.unmodifiableMap(items);
     }
 

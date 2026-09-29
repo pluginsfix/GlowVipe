@@ -2,6 +2,7 @@ package pluginsfix.glowvipe.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,8 +50,8 @@ class VaultDataTest {
         VaultData data = new VaultData(UUID.randomUUID());
         data.setPurchasedSlots(3);
         data.setPacked(true);
-        data.setItemData(0, new byte[]{1, 2, 3});
-        data.setItemData(1, new byte[]{4, 5, 6});
+        data.setItemData(0, Map.of("type", "DIAMOND_SWORD", "amount", 1));
+        data.setItemData(1, Map.of("type", "GOLDEN_APPLE", "amount", 16));
 
         assertThat(data.hasAnyItems()).isTrue();
         assertThat(data.isPacked()).isTrue();
